@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "deeleyllc-prom-proj.fullname" . }}-test-connection"
+  labels:
+    {{- include "deeleyllc-prom-proj.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "deeleyllc-prom-proj.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never
